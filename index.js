@@ -32,6 +32,7 @@ async function run() {
 
     const menuCollection = client.db("GreenCafeDB").collection("menu");
     const reviewsCollection = client.db("GreenCafeDB").collection("reviews");
+    const cartCollection = client.db("GreenCafeDB").collection("carts");
 
      app.get("/menu", async(req,res)=>{
            const result= await menuCollection.find().toArray();
@@ -43,6 +44,15 @@ async function run() {
            res.send(result);
      })
 
+     //cart collection
+
+     app.post('/carts',async(req,res)=>{
+       const cartItem=req.body;
+       const result= await cartCollection.insertOne(cartItem);
+       res.send(result);
+     })
+     
+
 
 
 
@@ -52,7 +62,7 @@ async function run() {
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     // Ensures that the client will close when you finish/error
-    //await client.close();
+    await client.close();
   }
 }
 run().catch(console.dir);
